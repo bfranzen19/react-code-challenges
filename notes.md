@@ -24,8 +24,44 @@ export default function ColorRenderer() {
 
 
 ## DARK MODE
-* 
+* implement a component that allows dark mode to light mode toggle
+* css class `dark-mode` that changes an element's background to dark gray
+* the `<div>` with the `className` `.page` takes up the whole screen, add `dark-mode` class to this.
+* when the button with the `className` `dark-mode-button` is clicked, the page should be displayed in dark mode.
+* when the button with the `className` `light-mode-button` is clicked, the page should be displayed without dark mode (light mode).
 
+* create a boolean flag in state, which will store whether or not the user is currently in dark mode
+    * set the default to `false` to automatically use light mode
+* add click handlers to both `<button>` elements
+* on click, setDarkMode to `true` in the dark mode `<button>` (false for light mode)
+* update the `className` in the `<div>` to update the class if `darkMode` state is set to `true`
+    * use string templating to 
+```jsx
+//DarkMode.js
+import {useState} from "react";
+
+export default function DarkMode() {
+    const [darkMode, setDarkMode] = useState(false);
+
+    return (
+        <div className={`page ${darkMode && "dark-mode"}`}>
+            <button
+                className='dark-mode-button'
+                onClick={() => setDarkMode(true)}
+            >
+                Dark Mode
+            </button>
+            <button
+                className='light-mode-button'
+                onClick={() => setDarkMode(false)}
+            >
+                Light Mode
+            </button>
+        </div>
+    );
+}
+
+```
 
 
 
