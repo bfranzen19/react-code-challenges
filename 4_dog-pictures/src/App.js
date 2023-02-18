@@ -1,9 +1,10 @@
+import DogPictures from "./Components/DogPictures";
 import "./App.css";
 
 function App() {
     return (
         <div className='App'>
-            <DogPictres />
+            <DogPictures />
         </div>
     );
 }
