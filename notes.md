@@ -1,6 +1,6 @@
 # [LinkedInLearning React.js Code Challenges](https://www.linkedin.com/learning/react-js-code-challenges/put-your-react-js-skills-to-the-test?autoplay=true&u=83102426)
 
-## COLOR RENDERER
+## 1. COLOR RENDERER
 * build a color renderer that displays color swatches on a UI
 * update the `ColorRenderer` component to display one instance of the `Color` component for each color in the array of colors.
 
@@ -24,7 +24,7 @@ export default function ColorRenderer() {
 ```
 
 
-## DARK MODE
+## 2. DARK MODE
 * implement a component that allows dark mode to light mode toggle
 * css class `dark-mode` that changes an element's background to dark gray
 * the `<div>` with the `className` `.page` takes up the whole screen, add `dark-mode` class to this.
@@ -67,7 +67,7 @@ export default function DarkMode() {
 
 
 
-## FORM VALIDATOR
+## 3. FORM VALIDATOR
 * validate a user sign-up form on submit
     * all fields must be filled in
     * email must have exactly 1 `@`
@@ -203,7 +203,7 @@ export default function FormValidator() {
 
 ```
 
-## DOG PICTURES
+## 4. DOG PICTURES
 * use a dog picture api to display dog images
 * use the `dog.ceo` api to fetch a random dog image and display that image on page load (instead of the hard coded one there now)
 * when the dog button is clicked, fetch a new dog image and render it on the ui
@@ -259,43 +259,79 @@ export default function DogPictures() {
 ```
 
 
-## SCORE KEEPER
+## 5. SCORE KEEPER
+* build a score keeping app
+* use localStorage to store the data in the browser
+    * localStorage allows you to store data in key: value pairs (like an object)
+* use localStorage to store the score so that it persists when you come back to the page
+    * should be able to refresh the page and still see the score from the previous render
+```javascript
+localStorage.getItem(key) // retrieve an item
+localStorage.setItem(key,value) // set data in localStorage
+```
+
+---
+* `useEffect()` whenever the score updates and use `localStorage.setItem('score', score)` and pass the score from state
+* to persist the score from `localStorage`, the default value in `useState()` should get the score that's stored (by the `score` key) and, if there's no score, set it to `0`
+    * `localStorage` stores everything as a string so need to make sure to cast that to an integer using `parseInt()`
+```jsx
+import {useEffect, useState} from "react";
+
+export default function ScoreKeeper() {
+    const [score, setScore] = useState(
+        parseInt(localStorage.getItem("score")) || 0
+    );
+
+    useEffect(() => {
+        localStorage.setItem("score", score);
+    }, [score]);
+
+    return (
+        <div>
+            <h1>your score is: {score}</h1>
+            <button onClick={() => setScore((prevScore) => prevScore + 1)}>
+                +
+            </button>
+            <button onClick={() => setScore((prevScore) => prevScore - 1)}>
+                -
+            </button>
+            <button onClick={() => setScore(0)}>reset</button>
+        </div>
+    );
+}
+```
+
+## 6. WINDOW EVENT
 * 
 
 
 
 
-## WINDOW EVENT
+## 7. COLOR PICKER
 * 
 
 
 
 
-## COLOR PICKER
+## 8. PIXEL ART
 * 
 
 
 
 
-## PIXEL ART
+## 9. SIMPLE CALCULATOR
 * 
 
 
 
 
-## SIMPLE CALCULATOR
+## 10. FOCUS ON AN INPUT
 * 
 
 
 
 
-## FOCUS ON AN INPUT
-* 
-
-
-
-
-## SHOPPING CART
+## 11. SHOPPING CART
 * 
 
 
