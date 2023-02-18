@@ -205,12 +205,57 @@ export default function FormValidator() {
 
 ## DOG PICTURES
 * use a dog picture api to display dog images
-* 
+* use the `dog.ceo` api to fetch a random dog image and display that image on page load (instead of the hard coded one there now)
+* when the dog button is clicked, fetch a new dog image and render it on the ui
 
 ---
-* 
+* create a `useEffect()`
+    * react hook that runs at multiple points in a react component's lifecycle
+    * will run when the component mounts and whenever state is updated
+    * pass an array to the `useEffect()` to tell it when to run
+        * empty array `[]` it will only run on initial mount (not when state updates)
+        * can pass different state variables into the array and the `useEffect()` will re-run when any of those states change
+        * if an array is not passed it, it can trigger an infinite loop
+* create a function that fetches the dog picture from the api 
+    * `fetchPuppy()` will be async
+    * use `fetch()` to fetch from the api
+    * when the response comes back from the api, convert it to `JSON`
+    * the api will return a message, this is what will be returned
+* `useState()` to initialize state
+* run the `fetchPuppy()` function from `useEffect()`
+    * use a `.then()` so that after the function finishes, we can update the state with the returned dog picture
+    * run `setPic()` with the returned picture (`dog.message` from `fetchPuppy()`)
+* set the `<img>` `src` to the picture that was returned from the api instead of the hardcoded one (this is the `dogPic` state variable)
+* add an `onClick` to the `<button>`
+    * make it async for the `fetchPuppy()` async function
+    * await `fetchPuppy()` in the `setDogPic()` state setter
 ```jsx
+import {useEffect, useState} from "react";
 
+const fetchPuppy = async () => {
+    const url = "https://dog.ceo/api/breeds/image/random";
+    const response = await fetch(url);
+    const dog = await response.json();
+
+    return dog.message;
+};
+
+export default function DogPictures() {
+    const [dogPic, setDogPic] = useState("");
+
+    useEffect(() => {
+        fetchPuppy().then((pic) => setDogPic(pic));
+    }, []);
+
+    return (
+        <div className='dog-pics'>
+            <img src={dogPic} alt='rando puppo' />
+            <button onClick={async (e) => setDogPic(await fetchPuppy())}>
+                🐶
+            </button>
+        </div>
+    );
+}
 ```
 
 
