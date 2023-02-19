@@ -315,7 +315,6 @@ export default function ScoreKeeper() {
 * when there's a double click anywhere in the `window`, trigger the `doubleClick()` function to fire the alert
 * when the `WindowEvent` component is unmounted, need to make it so that the `doubleClick()` function can't fire anymore
     * can accomplish this by returning a function from the `useEffect()` and use `window.removeEventListener('dblclick', doubleClick)`
-
 ```jsx
 // WindowEvent.js
 import {useEffect} from "react";
