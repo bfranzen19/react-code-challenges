@@ -302,9 +302,35 @@ export default function ScoreKeeper() {
 ```
 
 ## 6. WINDOW EVENT
-* 
+* practicing adding and removing effects within react
+* add and remove event listeners from the entire page (`window` object)
+* starter code: there's a button that toggles mounting a child component (`WindowEvent`)
+* when `WindowEvent` component is active, add an event listener to the window that triggers an alert if the user double clicks on the page
+* when the `WindowEvent` component is inactive, remove the window event
 
+---
+* import and add a `useEffect()` and pass `[]` to it so it only fires once
+* within the `useEffect()`, create a function (`doubleClick()`) to fire the `alert()` with the message
+* add an event listener to the `window` for the `dblclick` event
+* when there's a double click anywhere in the `window`, trigger the `doubleClick()` function to fire the alert
+* when the `WindowEvent` component is unmounted, need to make it so that the `doubleClick()` function can't fire anymore
+    * can accomplish this by returning a function from the `useEffect()` and use `window.removeEventListener('dblclick', doubleClick)`
 
+```jsx
+// WindowEvent.js
+import {useEffect} from "react";
+
+export default function WindowEvent() {
+    useEffect(() => {
+        const doubleClick = () => alert("mouse pressed");
+
+        window.addEventListener("dblclick", doubleClick);
+        return () => window.removeEventListener("dblclick", doubleClick);
+    }, []);
+
+    return <h2>Window event active</h2>;
+}
+```
 
 
 ## 7. COLOR PICKER
