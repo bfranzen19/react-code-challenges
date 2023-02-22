@@ -333,9 +333,69 @@ export default function WindowEvent() {
 
 
 ## 7. COLOR PICKER
-* 
+* working with multiple components and lifting up state. 
+* create a color picking app that sets the background fo the page to a color of the user's choosing. 
+* when the user clicks on a color, it changes the background of the whole page
+---
+* lifting state - moving state up to the top level component that needs that data and, if necessary, passing a function to update that state to the child components
+* pass the `setBackgroundColor()` down to the `Color` component as a prop
+* in the `Color` component, accept the `setBackgroundColor` prop, and add an `onClick` to set the background color to the hex code
+```jsx
+// Color.js
+export default function Color({hex, name, setBackgroundColor}) {
+    return (
+        <button
+            className='color-square'
+            style={{backgroundColor: hex}}
+            onClick={() => setBackgroundColor(hex)}
+        >
+            <h2>{name}</h2>
+        </button>
+    );
+}
+
+// ColorPicker.js
+import {useState} from "react";
+import Color from "./Color";
+
+const colors = [
+    {
+        hex: "#91A6FF",
+        name: "Cornflower Blue"
+    },
+    {
+        hex: "#FF88DC",
+        name: "Persian Pink"
+    },
+    {
+        hex: "#80FF72",
+        name: "Screamin Green"
+    },
+    {
+        hex: "#FF5154",
+        name: "Tart Orange"
+    }
+];
 
 
+export default function ColorPicker() {
+    const [backgroundColor, setBackgroundColor] = useState("white");
+
+    return (
+        <div className='page' style={{backgroundColor}}>
+            {colors.map((color) => (
+                <Color
+                    key={color.hex}
+                    hex={color.hex}
+                    name={color.name}
+                    setBackgroundColor={setBackgroundColor}
+                />
+            ))}
+        </div>
+    );
+}
+
+```
 
 
 ## 8. PIXEL ART
