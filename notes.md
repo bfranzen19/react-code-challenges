@@ -399,10 +399,196 @@ export default function ColorPicker() {
 
 
 ## 8. PIXEL ART
-* 
+* `Context` allows you to share data between components more easily. instead of having to pass a prop down multiple levels, use `Context`
+    * often need to pass props multiple layers and `Context` allows this to happen easier
+* when a color is clicked, it will select that color and turn the grid square the selected color when clicked, allowing you to draw.
+* use `Context` to share state between components
+---
+* implement `Context`
+    * import `createContext` 
+    * create a variable `ColorContext` and set it to `createContext()`
+    * pass an object to `createContext()`:
+        * color, set to `lightGray` default
+        * an empty function to update color (`setColor()`)
+```jsx
+const ColorContext = createContext({
+    color: 'lightGray',
+    setColor: () => {}
+});
+```
 
+* in the `PixelArt()` function, (this is the top level component) set up state
+* use `<ColorContext.Provider>` in the `return` and pass it the values for `color` and `setColor()`
+    * it won't change the `color` because both are set to `'lightGray'` already but the `setColor()` function will now be set to the function update `state` instead of an empty function that was created previously.
+* wrap other components in the `<ColorContext.Provider>`
+```jsx
+export default function PixelArt() {
+    const [color, setColor] = useState("lightGray");
 
+    return (
+        <ColorContext.Provider value={{color, setColor}}>
+            <ColorPicker />
+            <Pixels />
+        </ColorContext.Provider>
+    );
+}
+```
 
+* will need to use `Context` in other components:
+* `ColorPicker()` 
+    * import `useContext()` from `react`
+    * will need to set the color
+    * get the `setColor` from `Context` using `useContext(ColorContext)`
+    * when the button is clicked, need to set the color to the color of the button
+        * add an `onClick()` and run `setColor(color)`
+        * when a color is clicked, the current drawing color becomes that color
+```jsx
+function ColorPicker() {
+    const {setColor} = useContext(ColorContext);
+
+    const colors = [
+        "red",
+        "blue",
+        "yellow",
+        "green",
+        "black",
+        "white",
+        "purple"
+    ];
+
+    return (
+        <div>
+            <h1>choose a color</h1>
+            {colors.map((color) => (
+                <button
+                    key={color}
+                    style={{
+                        height: "20px",
+                        width: "20px",
+                        backgroundColor: color
+                    }}
+                    onClick={() => setColor(color)}
+                ></button>
+            ))}
+        </div>
+    );
+}
+```
+
+* `Pixel()` component
+    * sub-component of `Pixels()` component
+    * don't need to pass a color prop from  `Pixels()` to `Pixel()` to access data
+    * destructure `color` from `Context`
+    * each pixel will have its own `state`, which will be its current background color (originally hard-coded to `'lightGray'`)
+        * the background color should be set to the `color` from `Context`
+    * create `pixelColor` and `setPixelColor` with `useState` to allow the pixel to keep the color instead of changing when the drawing color is changed.
+        * set the default to `'lightGray'`
+    * add an `onClick` to the pixel and call `setPixelColor(color)` to set the `state` of that pixel to the current drawing color
+```jsx
+function Pixel() {
+    const {color} = useContext(ColorContext);
+    const [pixelColor, setPixelColor] = useState("lightGray");
+
+    return (
+        <button
+            onClick={() => setPixelColor(color)}
+            style={{
+                height: "20px",
+                width: "20px",
+                backgroundColor: pixelColor,
+                margin: "1px"
+            }}
+        />
+    );
+}
+```
+
+* full `PixelArt.js`
+```jsx
+import React, {createContext, useContext, useState} from "react";
+
+const ColorContext = createContext({
+    color: "lightGray",
+    setColor: () => {}
+});
+
+function ColorPicker() {
+    const {setColor} = useContext(ColorContext);
+
+    const colors = [
+        "red",
+        "blue",
+        "yellow",
+        "green",
+        "black",
+        "white",
+        "purple"
+    ];
+
+    return (
+        <div>
+            <h1>choose a color</h1>
+            {colors.map((color) => (
+                <button
+                    key={color}
+                    style={{
+                        height: "20px",
+                        width: "20px",
+                        backgroundColor: color
+                    }}
+                    onClick={() => setColor(color)}
+                ></button>
+            ))}
+        </div>
+    );
+}
+
+function Pixel() {
+    const {color} = useContext(ColorContext);
+    const [pixelColor, setPixelColor] = useState("lightGray");
+
+    return (
+        <button
+            onClick={() => setPixelColor(color)}
+            style={{
+                height: "20px",
+                width: "20px",
+                backgroundColor: pixelColor,
+                margin: "1px"
+            }}
+        />
+    );
+}
+
+function Pixels() {
+    const pixels = [];
+    for (let i = 0; i < 100; i++) pixels.push(<Pixel key={i} />);
+
+    return (
+        <div
+            style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(10,1fr)",
+                width: "210px",
+                margin: "0 auto"
+            }}
+        >
+            {pixels}
+        </div>
+    );
+}
+
+export default function PixelArt() {
+    const [color, setColor] = useState("lightGray");
+
+    return (
+        <ColorContext.Provider value={{color, setColor}}>
+            <ColorPicker />
+            <Pixels />
+        </ColorContext.Provider>
+    );
+}
+```
 
 ## 9. SIMPLE CALCULATOR
 * 
