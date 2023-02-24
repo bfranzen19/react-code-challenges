@@ -698,7 +698,11 @@ export default function SimpleCalculator() {
 ## 10. FOCUS ON AN INPUT
 * 
 
+---
+* 
+```jsx
 
+```
 
 
 ## 11. SHOPPING CART
