@@ -591,8 +591,107 @@ export default function PixelArt() {
 ```
 
 ## 9. SIMPLE CALCULATOR
-* 
+* very simplified version of a calculator that allows you to perform addition or subtraction on 2 numbers (to practice the `useReducer` hook)
+* sometimes `state` becomes complicated and there are multiple mutation you will need to implement on the data. `useReducer` helps simplify this by moving state managment outside of the component.
+* implement the logic:
+    * 2 numbers can be selected 
+    * you can add the 2 numbers
+    * you can subtract the 2 numbers
+    * you can clear the calcultor (reset both numbers and result to zero)
+---
+* populate the inital state object with `num1:0`, `num2:0`, and `result:'no result yet'` to allow us to clear and reset all the inital values
+```jsx
+const initialState = {
+    num1: 0,
+    num2: 0,
+    result: "no result yet"
+};
+```
 
+* import `useReducer` from `react`
+* to use `useReducer`, need to inialize a `reducer()` function and pass it into the `useReducer` in `SimpleCalculator()`
+```jsx
+const [state, dispatch] = useReducer(reducer, initialState);
+```
+
+* implementing actions
+    * implement an `onClick` in the button - when user clicks on the button, fire the `dispatch` function and pass in the `type` and `number`
+        * in the `reducer`, check that `action.type` matches `SET_NUM_ONE`, return a copy of current `state` and set `num1` to `action.number`
+    * do the same for `SET_NUM_TWO`
+    * for `PLUS` and `MINUS`, dispatch the correct action
+        * in `reducer`, copy `state`, and set `result: state.num1 + state.num2` (same for `MINUS`)
+    * for `CLEAR`, dispatch the action and, in `reducer` return the `initalState`
+* display the `result` on the page using `{state.result}`
+```jsx
+import {useReducer} from "react";
+
+const initialState = {
+    num1: 0,
+    num2: 0,
+    result: "no result yet"
+};
+
+function reducer(state, action) {
+    if (action.type === "SET_NUM_ONE") return {...state, num1: action.number};
+    if (action.type === "SET_NUM_TWO") return {...state, num2: action.number};
+    if (action.type === "ADD")
+        return {...state, result: state.num1 + state.num2};
+    if (action.type === "SUBTRACT")
+        return {...state, result: state.num1 - state.num2};
+    if (action.type === "CLEAR") return initialState;
+}
+
+export default function SimpleCalculator() {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    return (
+        <div>
+            <div>
+                <h2>number 1: {state.num1}</h2>
+                {numbers.map((number) => (
+                    <button
+                        id='button-one'
+                        key={number}
+                        onClick={() => dispatch({type: "SET_NUM_ONE", number})}
+                        style={{backgroundColor: "lightgray"}}
+                    >
+                        {number}
+                    </button>
+                ))}
+            </div>
+            <div>
+                <h2>number 2: {state.num2}</h2>
+                {numbers.map((number) => (
+                    <button
+                        id='button-two'
+                        key={number}
+                        onClick={() => dispatch({type: "SET_NUM_TWO", number})}
+                        style={{backgroundColor: "lightslategray"}}
+                    >
+                        {number}
+                    </button>
+                ))}
+            </div>
+            <div>
+                <h2>actions</h2>
+                <button id='plus' onClick={() => dispatch({type: "ADD"})}>
+                    +
+                </button>
+                <button id='minus' onClick={() => dispatch({type: "SUBTRACT"})}>
+                    -
+                </button>
+                <button id='clear' onClick={() => dispatch({type: "CLEAR"})}>
+                    c
+                </button>
+            </div>
+            <div>
+                <h2>result: {state.result}</h2>
+            </div>
+        </div>
+    );
+}
+```
 
 
 
