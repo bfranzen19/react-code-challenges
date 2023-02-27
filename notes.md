@@ -696,14 +696,43 @@ export default function SimpleCalculator() {
 
 
 ## 10. FOCUS ON AN INPUT
-* 
+* focus on an input upon page load to practice using `refs` in `react`
+* within `react`, usually interact with the virtual DOM but, sometimes, need to interact with the actual DOM and can do so using `refs`
 
 ---
-* 
+* import `useRef` and `useEffect`
+* initialize `useRef`
+* add `ref={focusedInput}` to the `<input>`
 ```jsx
-
+const focusedInput = useRef(null);
+...
+<input name='focused-input' ref={focusedInput} />
 ```
 
+* implement a `useEffect` to focus on the component mounting
+```jsx
+useEffect(() => { focusedInput.current.focus() }, []);
+```
+
+```jsx
+import React, {useEffect, useRef} from "react";
+
+export default function FocusInput() {
+    const focusedInput = useRef(null);
+
+    useEffect(() => {
+        focusedInput.current.focus();
+    }, []);
+
+    return (
+        <React.Fragment>
+            <label htmlFor='focused-input'>focus me on page load!</label>
+            <br />
+            <input name='focused-input' ref={focusedInput} />
+        </React.Fragment>
+    );
+}
+```
 
 ## 11. SHOPPING CART
 * 
